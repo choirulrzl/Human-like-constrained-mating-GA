@@ -1,8 +1,6 @@
 import numpy
-from numpy.random import randint
 import random
-from random import random as rand
-from random import gauss, randrange
+
 
 # initialize
 num_individuals = 20
@@ -16,6 +14,7 @@ equation_inputs = [-2,5]
 # Defining the population size.
 pop_size = (num_individuals,num_of_genes) # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
 #Creating the initial population.
+
 new_population = numpy.random.uniform(low=lower_limit, high=upper_limit, size=pop_size)
 print(new_population)
 
@@ -58,8 +57,16 @@ def mutation(offspring_crossover):
             offspring_crossover[idx, 1] = offspring_crossover[idx, 1] + random_value
     return offspring_crossover
 
+def fitness_similarity_check(best_result):
+    result = False
+    for n in range(len(best_result)):
+        if best_result[n] == best_result[n-1]:
+            result = True
+    return result
 
-num_generations = 5
+
+num_generations = 10
+best_fitness = []
 for generation in range(num_generations):
     print("Generation : ", generation)
     # Measing the fitness of each chromosome in the population.
@@ -83,7 +90,11 @@ for generation in range(num_generations):
     print("new population : ",new_population)
 
     # The best result in the current iteration.
-    print("Best result : ", numpy.max(numpy.sum(new_population*equation_inputs, axis=1)))
+    best_result = numpy.sum(new_population*equation_inputs, axis=1)
+    best_fitness.append(best_result)
+    print("Best result : ", numpy.max(best_result))
+    if fitness_similarity_check(best_result)==True:
+        break
 
 # Getting the best solution after iterating finishing all generations.
 #At first, the fitness is calculated for each solution in the final generation.
