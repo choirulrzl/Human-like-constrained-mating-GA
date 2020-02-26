@@ -10,7 +10,7 @@ The y=target is to maximize this equation ASAP:
 """
 
 # Inputs of the equation.
-equation_inputs = [0,0,0,0,-3,2]
+equation_inputs = [4,-2,3.5,5,-11,-4.7]
 
 # Number of the weights we are looking to optimize.
 num_weights = 6
