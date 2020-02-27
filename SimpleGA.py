@@ -3,9 +3,9 @@ import random
 import benchmarkFunction as b
 
 # initialize
-num_individuals = 100
+num_individuals = 10
 num_of_genes = 2
-num_parents_mating = 4
+num_parents_mating = 5
 lower_limit = -32
 upper_limit = 32
 
@@ -13,11 +13,6 @@ upper_limit = 32
 pop_size = (num_individuals,num_of_genes) # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
 #Creating the initial population.
 new_population = numpy.random.uniform(low=lower_limit, high=upper_limit, size=pop_size)
-
-def fitness_calculation(x,y):
-    h = -200 * numpy.exp(-0.02*numpy.sqrt((x ** 2) + (y **2)))
-    a = 0.000000000000000001
-    return 1/(h + a)
 
 def select_mating_pool(pop, fitness, num_parents):
     # Selecting the best individuals in the current generation as parents for producing the offspring of the next generation.
