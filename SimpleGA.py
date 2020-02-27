@@ -1,25 +1,23 @@
 import numpy
 import random
-
+import benchmarkFunction as b
 
 # initialize
-num_individuals = 20
+num_individuals = 100
 num_of_genes = 2
 num_parents_mating = 4
-upper_limit = 4.0
-lower_limit = -4.0
-
-equation_inputs = [-2,5]
+lower_limit = -32
+upper_limit = 32
 
 # Defining the population size.
 pop_size = (num_individuals,num_of_genes) # The population will have sol_per_pop chromosome where each chromosome has num_weights genes.
 #Creating the initial population.
-
 new_population = numpy.random.uniform(low=lower_limit, high=upper_limit, size=pop_size)
-print(new_population)
 
-def fitness_calculation(equation_inputs,population):
-    return numpy.sum(population*equation_inputs,axis=1)
+def fitness_calculation(x,y):
+    h = -200 * numpy.exp(-0.02*numpy.sqrt((x ** 2) + (y **2)))
+    a = 0.000000000000000001
+    return 1/(h + a)
 
 def select_mating_pool(pop, fitness, num_parents):
     # Selecting the best individuals in the current generation as parents for producing the offspring of the next generation.
@@ -66,41 +64,34 @@ def fitness_similarity_check(best_result):
 
 
 num_generations = 10
-best_fitness = []
+stop_point=[]
 for generation in range(num_generations):
     print("Generation : ", generation)
     # Measing the fitness of each chromosome in the population.
-    fitness = fitness_calculation(equation_inputs, new_population)
-    
-    print("Fitness : ", fitness)
-
+    fitness = b.ackley(new_population[:,0], new_population[:,1])
     # Selecting the best parents in the population for mating.
     parents = select_mating_pool(new_population, fitness, num_parents_mating)
-    print("Parents : ",parents)
     # Generating next generation using crossover.
     offspring_crossover = crossover(parents,offspring_size=(pop_size[0]-parents.shape[0], num_of_genes))
-    print("Offspring Crossover : ",offspring_crossover)
     # Adding some variations to the offsrping using mutation.
     offspring_mutation = mutation(offspring_crossover)
-    print("Offspring mutation : ",offspring_mutation)
     # Creating the new population based on the parents and offspring.
     new_population[0:parents.shape[0], :] = parents
     new_population[parents.shape[0]:, :] = offspring_mutation
-
-    print("new population : ",new_population)
-
     # The best result in the current iteration.
-    best_result = numpy.sum(new_population*equation_inputs, axis=1)
-    best_fitness.append(best_result)
+    best_result = b.ackley(new_population[:,0], new_population[:,1])
+    stop_point.append(numpy.max(best_result))
     print("Best result : ", numpy.max(best_result))
-    if fitness_similarity_check(best_result)==True:
-        break
+    # if fitness_similarity_check(stop_point)==True:
+    #     break
 
+print(stop_point)
 # Getting the best solution after iterating finishing all generations.
 #At first, the fitness is calculated for each solution in the final generation.
-fitness = fitness_calculation(equation_inputs, new_population)
+fitness = b.ackley(new_population[:,0], new_population[:,1])
 # Then return the index of that solution corresponding to the best fitness.
 best_match_idx = numpy.where(fitness == numpy.max(fitness))
 
 print("Best solution : ", new_population[best_match_idx, :])
 print("Best solution fitness : ", fitness[best_match_idx])
+print("Best f(x) : ", b.ackley_global_minima(new_population[best_match_idx, 0],new_population[best_match_idx, 1]))
