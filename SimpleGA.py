@@ -5,7 +5,7 @@ import benchmarkFunction as b
 # initialize
 num_individuals = 10
 num_of_genes = 2
-num_parents_mating = 5
+num_parents_mating = 4
 lower_limit = -32
 upper_limit = 32
 
