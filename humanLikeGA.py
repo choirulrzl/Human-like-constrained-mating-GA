@@ -51,7 +51,10 @@ def cxOnePoint(ind1,ind2):
 def crossover(parents, num_individuals,num_of_genes):
     offspring = numpy.empty([num_individuals,num_of_genes])
     for k in range(num_individuals//2):
-        offspring[k],offspring[k+1] = cxOnePoint(parents[k],parents[k+1])
+        if parents[k][0] != parents[k+1][0] and (parents[k][1] != parents[k+1][1] or parents[k][1],parents[k+1][1] == 0.0):
+            offspring[k],offspring[k+1] = cxOnePoint(parents[k],parents[k+1])
+            offspring[k][1] = k+1
+            offspring[k+1][1] = k+1
     return offspring
 
 def mutation(offspring_crossover):
@@ -81,18 +84,15 @@ population = initial_setup(pop)
 for generation in range(num_generations):
     print("Generation : ", generation)
     fitness = b.ackley(population[:,3], population[:,-1])
-    print(population[0,0])
     parent_selection = roulette_select(population,fitness,num_individuals)
-    print(parent_selection)
-    break
     offspring_crossover = crossover(parent_selection,num_individuals,num_of_genes)
     offspring_mutation = mutation(offspring_crossover)
     best_result = numpy.max(b.ackley(population[:,3], population[:,-1]))
     print("Best Result : ", best_result)
 
-# fitness = b.ackley(population[:,3], population[:,-1])
-# best_match_idx = numpy.where(fitness == numpy.max(fitness))
-# print("Best solution : ", population[best_match_idx, :])
-# print("Best solution fitness : ", fitness[best_match_idx])
-# print("Best f(x) : ", b.ackley_global_minima(population[best_match_idx, 0],population[best_match_idx, 1]))
+fitness = b.ackley(population[:,3], population[:,-1])
+best_match_idx = numpy.where(fitness == numpy.max(fitness))
+print("Best solution : ", population[best_match_idx, :])
+print("Best solution fitness : ", fitness[best_match_idx])
+print("Best f(x) : ", b.ackley_global_minima(population[best_match_idx, 0],population[best_match_idx, 1]))
     
