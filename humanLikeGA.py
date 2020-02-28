@@ -30,12 +30,18 @@ def roulette_select(population, fitnesses, number_of_individuals):
     probs = [sum(rel_fitness[:i+1]) for i in range(len(rel_fitness))]
     # Draw new population
     new_population = []
+    gender = False
     for n in range(number_of_individuals):
         r = random.random()
         for (i, individual) in enumerate(pop):
-            if r <= probs[i]:
+            if r <= probs[i] and individual[0]%2==1 and gender == False:
                 new_population.append(individual)
+                gender = True
                 break
+            elif r <= probs[i] and individual[0]%2==0 and gender == True:
+                new_population.append(individual)
+                gender = False
+                break    
     return new_population
 
 def cxOnePoint(ind1,ind2):
@@ -61,7 +67,7 @@ def mutation(offspring_crossover):
 
 # initialize hyperparameter
 num_generations = 10
-num_individuals = 4
+num_individuals = 10
 num_of_genes = 5
 lower_limit = -4
 upper_limit = 4
@@ -75,15 +81,18 @@ population = initial_setup(pop)
 for generation in range(num_generations):
     print("Generation : ", generation)
     fitness = b.ackley(population[:,3], population[:,-1])
+    print(population[0,0])
     parent_selection = roulette_select(population,fitness,num_individuals)
+    print(parent_selection)
+    break
     offspring_crossover = crossover(parent_selection,num_individuals,num_of_genes)
     offspring_mutation = mutation(offspring_crossover)
     best_result = numpy.max(b.ackley(population[:,3], population[:,-1]))
     print("Best Result : ", best_result)
 
-fitness = b.ackley(population[:,3], population[:,-1])
-best_match_idx = numpy.where(fitness == numpy.max(fitness))
-print("Best solution : ", population[best_match_idx, :])
-print("Best solution fitness : ", fitness[best_match_idx])
-print("Best f(x) : ", b.ackley_global_minima(population[best_match_idx, 0],population[best_match_idx, 1]))
+# fitness = b.ackley(population[:,3], population[:,-1])
+# best_match_idx = numpy.where(fitness == numpy.max(fitness))
+# print("Best solution : ", population[best_match_idx, :])
+# print("Best solution fitness : ", fitness[best_match_idx])
+# print("Best f(x) : ", b.ackley_global_minima(population[best_match_idx, 0],population[best_match_idx, 1]))
     
