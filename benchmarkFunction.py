@@ -109,12 +109,12 @@ def bird_global_minima(x):
 '''[9] bartelsConn Function
 Global Minima f(x) = -1 located at x = (0,0); x [-500,500]'''
 def bartelsConn(x,y):
-    h = np.abs(np.power(x,2) + np.power(y,2) + x*y) + np.abs(np.sin(x)) + np.abs(np.con(y))
+    h = np.abs(np.power(x,2) + np.power(y,2) + x*y) + np.abs(np.sin(x)) + np.abs(np.cos(y))
     a = 0.000000000000000001
     return 1/(h + a)
 
 def bartelsConn_global_minima(x,y):
-    return np.abs(np.power(x,2) + np.power(y,2) + x*y) + np.abs(np.sin(x)) + np.abs(np.con(y))
+    return np.abs(np.power(x,2) + np.power(y,2) + x*y) + np.abs(np.sin(x)) + np.abs(np.cos(y))
 
 '''[10] ackleyn3 Function
 Global Minima f(x) = -195.629028238419 located at x = (-+0.682584587365898,-0.36075325513719); x [-32;32]'''

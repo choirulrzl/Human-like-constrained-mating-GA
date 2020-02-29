@@ -1,6 +1,7 @@
 import numpy
 import random
 import benchmarkFunction as b
+import math as m
 
 def normalize_parameter(population, x_min, x_max):
     X = population
@@ -49,28 +50,31 @@ def mutation(offspring_crossover):
 
 # initialize hyperparameter
 num_generations = 10
-num_individuals = 5
+num_individuals = 100
 num_of_genes = 2
-lower_limit = -4
-upper_limit = 4
+lower_limit = -32
+upper_limit = 32
 
 # Defining the population size.
 population_size = (num_individuals,num_of_genes)
 #Creating the initial population.
 population = numpy.random.uniform(low=lower_limit, high=upper_limit, size=population_size)
+y=[]
+for x in range(30):
+    for generation in range(num_generations):
+        print("Generation : ", generation)
+        fitness = b.ackleyn3(population[:,0], population[:,1])
+        parent_selection = roulette_select(population,fitness,num_individuals)
+        offspring_crossover = crossover(parent_selection,num_individuals,num_of_genes)
+        offspring_mutation = mutation(offspring_crossover)
+        best_result = numpy.max(b.ackleyn3(population[:,0], population[:,1]))
+        print("Best Result : ", best_result)
 
-for generation in range(num_generations):
-    print("Generation : ", generation)
-    fitness = b.ackley(population[:,0], population[:,1])
-    parent_selection = roulette_select(population,fitness,num_individuals)
-    offspring_crossover = crossover(parent_selection,num_individuals,num_of_genes)
-    offspring_mutation = mutation(offspring_crossover)
-    best_result = numpy.max(b.ackley(population[:,0], population[:,1]))
-    print("Best Result : ", best_result)
-
-fitness = b.ackley(population[:,0], population[:,1])
-best_match_idx = numpy.where(fitness == best_result)
-print("Best solution : ", population[best_match_idx, :])
-print("Best solution fitness : ", fitness[best_match_idx])
-print("Best f(x) : ", b.ackley_global_minima(population[best_match_idx, 0],population[best_match_idx, 1]))
-    
+    fitness = b.ackleyn3(population[:,0], population[:,1])
+    best_match_idx = numpy.where(fitness == best_result)
+    print("Best solution : ", population[best_match_idx, :])
+    print("Best solution fitness : ", fitness[best_match_idx])
+    # print("Best f(x) : ", b.ackleyn3_global_minima(population[best_match_idx, 0],population[best_match_idx, 1]))
+    y.append(population[best_match_idx, :])    
+z=numpy.average(y)
+print(z)
