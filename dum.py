@@ -1,7 +1,12 @@
 import numpy as np
-y = []
-for x in range (10):
-    y.append(x)
-    z = np.average(y)
-    print(y)
-    print(z)
+
+x = [2,3]
+
+def hitung(x):
+    a = np.sum([(x[i])for i in range(len(x))])
+    print(a)
+
+D = 5
+a = [i+1 for i in range(len(x))]
+
+print(a)

@@ -4,7 +4,7 @@ import benchmarkFunction as b
 import math as m
 
 #setting up the DNA of population
-def initial_setup(population):
+def initial_setup(population):      
     for x in range(len(population[:,0])):
         # ganjil(1) male; genap(0) female
         if x%2==1:
